@@ -1,0 +1,58 @@
+Chapter - 06
+Supervised Classification
+- Features obtained as dictionary with a separate function
+- Create a list of tuples: (featureset dict,label)
+- Split the above into training and test set
+- Evaluate accuracy on cross-validation set [Add/remove features by seeing where the classifier is going wrong, based on most_informative_features, etc.]
+
+Examples:
+# Gender classification based on name. [Last character(s) as feature]
+# Document Classification. [Most frequent word occurences as features]
+# POS Tagging. [Most common list of last 3 characters as feature set, length of the word, the number of syllables it contains]
+# POS Tagging by exploiting context - pass the sentence rather than just the word, the prev-word/its tag is used as a feature
+# Classifying chat messages whether it is a statement, emotion, question, etc
+# Recognizing Textual Entailment - Whether hypothesis made from the text is true or false. Based on how much overlap of words and Named Entities
+
+*Naive Bayes Classifier - most_informative_features
+*DecisionTreeClassifier - classifier.pseudocode(depth=4) shows the decison tree classification logic
+
+*Sequence Classification - the tags of the prev words as feature. Basic classifier has a shortcoming that once we commit to a label, we cannot go back and rectify (since later we might find evidence that the classification was wrong)
+*Advanced models to overcome these limitations (by using iterative means) - Hidden Markov Models, Maximum Entropy Markov Models and Linear-Chain Conditional Random Field Models
+
+Chapter - 07
+Information Extraction Architecture
+Sentence Segmentation -> Tokenization -> POS Tagging -> Named Entitiy Detection -> Relation Detection
+
+Chunking - similar to tokenization but at a higher level. A group of tokens are put into a single chunk
+	 - Define a chunk grammer consisting of rules that indicate how sentences should be chunked. Eg: "NP: {<DT>?<JJ>*<NN>}" . This is similar to using regex.
+
+Representation using IOB Tag notation: 
+- Each token is tagged with one of three special chunk tags, I (inside), O (outside), or B (begin). 
+- A token is tagged as B if it marks the beginning of a chunk. 
+- Subsequent tokens within the chunk are tagged I. 
+- All other tokens are tagged O. 
+- The B and I tags are suffixed with the chunk type, e.g. B-NP, I-NP.
+
+Types of Chunkers:
+- Regular Expression Based 
+- Unigram/Bigram Based 
+- ML Classifier Based (with different features and nltk.MaxentClassifier)
+
+NLTK Trees - Creation and Traversing
+
+Named Entity Recognition - An ML classifier based approach for noun chunking can be used to develop an NER system
+NLTK provides a built-in function nltk.ne_chunk()
+
+ORGANIZATION	Georgia-Pacific Corp., WHO
+PERSON		Eddy Bonte, President Obama
+LOCATION	Murray River, Mount Everest
+DATE		June, 2008-06-29
+TIME		two fifty a m, 1:30 p.m.
+MONEY		175 million Canadian Dollars, GBP 10.40
+PERCENT		twenty pct, 18.75 %
+FACILITY	Washington Monument, Stonehenge
+GPE		South East Asia, Midlothian
+
+Relation extraction can be performed using either rule-based systems which typically look for specific patterns in the text that connect entities and the intervening words; 
+or using machine-learning systems which typically attempt to learn such patterns automatically from a training corpus.
+Function: nltk.sem.extract_rels() - specify the regex pattern
